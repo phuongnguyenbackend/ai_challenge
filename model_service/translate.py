@@ -21,16 +21,15 @@ class TranslationRequest(BaseModel):
     src_lang: str
     tgt_lang: str
     
-    
+def detect_language(text):
+    lang, _ = langid.classify(text)
+    return lang
+ 
 class Translate:
     def __init__(self, text):
         self.text = text.strip()
         self.client = genai.Client(api_key=GEMINI_API_KEY)
 
-    def detect_language(self):
-        corrected = self.gemini_correct()
-        lang, _ = langid.classify(corrected)
-        return lang,corrected
 
     def gemini_correct(self):
         prompt = textwrap.dedent(f"""
@@ -88,12 +87,9 @@ app.add_middleware(
 async def translate_text(request : TranslationRequest):
     try:
         translate = Translate(request.text)
-        src_lang,corrected = translate.detect_language()
-
-        if src_lang == request.tgt_lang:
-            translated = corrected
-        else:
-            translated = translate.translate(src_lang, request.tgt_lang)
+        corrected = translate.gemini_correct()
+        src_lang = detect_language(corrected)
+        translated = translate.translate(src_lang, request.tgt_lang)
         
         return {
             "src_lang": src_lang,
