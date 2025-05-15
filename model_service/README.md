@@ -1,6 +1,6 @@
 ### Run
 
-uvicorn translate:app --reload
+uvicorn main:app --reload
 
 
 ### Read docs

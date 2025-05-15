@@ -1,12 +1,9 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from fastapi.middleware.cors import CORSMiddleware
-import langid
 import requests
-import textwrap
-from google import genai
 import os
-
+import langid
+import textwrap
+from pydantic import BaseModel
+from google import genai
 from dotenv import load_dotenv
 
 
@@ -71,36 +68,3 @@ class Translate:
 
         else:
             raise Exception(response.text)
-
-
-app  = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-@app.post("/api/translate")
-async def translate(request : TranslationRequest):
-    try:
-        translate = Translate(request.text)
-        corrected = translate.gemini_correct()
-        translate = Translate(corrected)
-        src_lang = translate.detect_language()
-
-        if src_lang == request.tgt_lang:
-            translated = corrected
-        else:
-            translated = translate.translate(src_lang, request.tgt_lang)
-        
-        return {
-            "src_lang": src_lang,
-            "corrected": corrected,
-            "translated": translated
-        }
-
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
