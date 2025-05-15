@@ -28,8 +28,9 @@ class Translate:
         self.client = genai.Client(api_key=GEMINI_API_KEY)
 
     def detect_language(self):
-        lang, _ = langid.classify(self.text)
-        return lang
+        corrected = self.gemini_correct()
+        lang, _ = langid.classify(corrected)
+        return lang,corrected
 
     def gemini_correct(self):
         prompt = textwrap.dedent(f"""
@@ -83,13 +84,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post("/api/translate")
-async def translate(request : TranslationRequest):
+@app.post("/api/translate_text")
+async def translate_text(request : TranslationRequest):
     try:
         translate = Translate(request.text)
-        corrected = translate.gemini_correct()
-        translate = Translate(corrected)
-        src_lang = translate.detect_language()
+        src_lang,corrected = translate.detect_language()
 
         if src_lang == request.tgt_lang:
             translated = corrected
