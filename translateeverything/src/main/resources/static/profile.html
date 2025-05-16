@@ -74,48 +74,60 @@
 
 
 <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            fetch("/api/getInfoUser")
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("username").textContent = data.username;
-                    document.getElementById("fullName").value = data.fullName;
-                    document.getElementById("gmail").value = data.gmailUser;
-
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                });
+    fetch('/api/check_session_profile')
+        .then(res => {
+            if (res.status === 200) {
+                console.log("ok");
+            } else {
+                window.location.href = '/index.html';
+            }
+        })
+        .catch(err => {
+            console.error("Error:", err);
+            window.location.href = '/index.html';
         });
+    document.addEventListener("DOMContentLoaded", () => {
+        fetch("/api/getInfoUser")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("username").textContent = data.username;
+                document.getElementById("fullName").value = data.fullName;
+                document.getElementById("gmail").value = data.gmailUser;
 
-        document.getElementById("profileForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            const data = {
-                username: document.getElementById("username").textContent.trim(),
-                fullName: document.getElementById("fullName").value.trim(),
-                emailUser: document.getElementById("gmail").value.trim(),
-                password: document.getElementById("currentPassword").value.trim(),
-                newPassword: document.getElementById("newPassword").value.trim(),
-                confirmNewPassword: document.getElementById("confirmPassword").value.trim(),
-            };
-
-            fetch("/api/updateInfoUser", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
             })
-                .then(res => res.text())
-                .then(text => {
-                    if (text.trim() === "YES"){
-                        window.location.href = "login.html";
-                    }else {
-                        document.getElementById("response").innerText = text;
-                    }
-                })
-                .catch(error => {
-                    document.getElementById("response").innerText = "Error: " + error;
-                });
-        });
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    });
+
+    document.getElementById("profileForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const data = {
+            username: document.getElementById("username").textContent.trim(),
+            fullName: document.getElementById("fullName").value.trim(),
+            emailUser: document.getElementById("gmail").value.trim(),
+            password: document.getElementById("currentPassword").value.trim(),
+            newPassword: document.getElementById("newPassword").value.trim(),
+            confirmNewPassword: document.getElementById("confirmPassword").value.trim(),
+        };
+
+        fetch("/api/updateInfoUser", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.text())
+            .then(text => {
+                if (text.trim() === "YES"){
+                    window.location.href = "login.html";
+                }else {
+                    document.getElementById("response").innerText = text;
+                }
+            })
+            .catch(error => {
+                document.getElementById("response").innerText = "Error: " + error;
+            });
+    });
     </script>
 </body>
 </html>

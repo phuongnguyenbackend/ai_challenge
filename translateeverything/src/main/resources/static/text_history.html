@@ -48,6 +48,18 @@
     </div>
 
     <script>
+        fetch('/api/check_session_text_history')
+            .then(res => {
+                if (res.status === 200) {
+                    console.log("ok");
+                } else {
+                    window.location.href = '/index.html';
+                }
+            })
+            .catch(err => {
+                console.error("Error:", err);
+                window.location.href = '/index.html';
+            });
         async function loadHistory() {
             try {
                 const response = await fetch('/api/view_text_history');

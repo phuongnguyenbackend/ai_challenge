@@ -119,30 +119,42 @@
         </div>
     </div>
     <script>
+        fetch('/api/check_session_home')
+            .then(res => {
+                if (res.status === 200) {
+                    console.log("ok");
+                } else {
+                    window.location.href = '/index.html';
+                }
+            })
+            .catch(err => {
+                console.error("Error:", err);
+                window.location.href = '/index.html';
+            });
         fetch("/api/getNameToHello")
-                .then(response => response.text())
-                .then(fullName => {
-                    document.getElementById("greeting").textContent = "Hello, " + fullName;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById("username").textContent = "Undefined";
-                });
+            .then(response => response.text())
+            .then(fullName => {
+                document.getElementById("greeting").textContent = "Hello, " + fullName;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("username").textContent = "Undefined";
+            });
         document.getElementById("logoutBtn").addEventListener("click", function () {
-                fetch("http://localhost:8080/api/logout", {
-                    method: "POST",
-                    credentials: "include"
-                })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = "index.html";
-                    } else {
-                        console.error("Logout failed");
-                    }
-                })
-                .catch(error => {
-                    console.error("Error during logout:", error);
-                });
+            fetch("http://localhost:8080/api/logout", {
+                method: "POST",
+                credentials: "include"
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "index.html";
+                } else {
+                    console.error("Logout failed");
+                }
+            })
+            .catch(error => {
+                console.error("Error during logout:", error);
+            });
         });
     </script>
     <script>
