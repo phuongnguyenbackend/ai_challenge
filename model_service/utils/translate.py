@@ -67,36 +67,5 @@ class Translate:
             return response.json()["data"]["translations"][0]["translatedText"]
 
         else:
-<<<<<<< HEAD:model_service/translate.py
             raise Exception(response.text)
 
-
-app  = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-@app.post("/api/translate_text")
-async def translate_text(request : TranslationRequest):
-    try:
-        translate = Translate(request.text)
-        corrected = translate.gemini_correct()
-        src_lang = detect_language(corrected)
-        translated = translate.translate(src_lang, request.tgt_lang)
-        
-        return {
-            "src_lang": src_lang,
-            "corrected": corrected,
-            "translated": translated
-        }
-
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
-=======
-            raise Exception(response.text)
->>>>>>> fb95e52d397b48aa42f081b6a4da53bcd9edd7ab:model_service/utils/translate.py
