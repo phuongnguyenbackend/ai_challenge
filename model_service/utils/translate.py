@@ -1,12 +1,9 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from fastapi.middleware.cors import CORSMiddleware
-import langid
 import requests
-import textwrap
-from google import genai
 import os
-
+import langid
+import textwrap
+from pydantic import BaseModel
+from google import genai
 from dotenv import load_dotenv
 
 
@@ -70,6 +67,7 @@ class Translate:
             return response.json()["data"]["translations"][0]["translatedText"]
 
         else:
+<<<<<<< HEAD:model_service/translate.py
             raise Exception(response.text)
 
 
@@ -99,3 +97,6 @@ async def translate_text(request : TranslationRequest):
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+=======
+            raise Exception(response.text)
+>>>>>>> fb95e52d397b48aa42f081b6a4da53bcd9edd7ab:model_service/utils/translate.py

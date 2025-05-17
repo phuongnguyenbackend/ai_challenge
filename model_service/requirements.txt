@@ -3,4 +3,4 @@ uvicorn
 langid
 requests
 python-dotenv
-google-generativeai
+google-genai
