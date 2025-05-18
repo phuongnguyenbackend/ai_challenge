@@ -11,8 +11,10 @@ from utils.pdf_utils import (
 
 UPLOAD_FOLDER = "uploads"
 OUTPUT_FOLDER = "outputs"
+TEMP_DIR = "temp_backgrounds"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
+os.makedirs(TEMP_DIR, exist_ok=True)
 
 router = APIRouter()
 
@@ -51,8 +53,16 @@ async def translate_pdf(file: UploadFile = File(...)):
         f.write(content)
 
     # Extract, translate, and generate output PDF
-    json_data = extract_pdf_cells(input_path)
-    create_pdf_from_json(json_data, output_path)
+    json_data = extract_pdf_cells(
+        pdf_path=input_path,
+        translate=True
+    )
+    create_pdf_from_json(
+        data=json_data,
+        pdf_path=input_path,
+        output_path=output_path,
+        temp_dir=TEMP_DIR
+    )
 
     # Return file as response
     return FileResponse(output_path, media_type="application/pdf", filename="translated_vi.pdf")

@@ -5,7 +5,12 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.pdfmetrics import stringWidth
-from utils.translate import Translate
+from google import genai
+import logging
+from PIL import Image, ImageDraw
+from tqdm import tqdm
+
+logging.basicConfig(level=logging.INFO)
 
 FONT_PATH = "NotoSans-Regular.ttf"
 FONT_NAME = "NotoSans"
@@ -14,85 +19,216 @@ if not os.path.exists(FONT_PATH):
     raise FileNotFoundError(f"Font file not found: {FONT_PATH}")
 pdfmetrics.registerFont(TTFont(FONT_NAME, FONT_PATH))
 
+# Initialize the Gemini client once (developer API)
+client = genai.Client(
+    api_key=os.getenv("GEMINI_API_KEY")
+)
 
-def extract_pdf_cells(pdf_path: str):
+def translate_with_gemini_batched(text: str) -> str:
+    prompt = (
+        "You are a professional translator. "
+        "First, carefully read the entire English text below—each line is separated by newline characters—to fully grasp its context, style, and terminology. "
+        "Then translate it into Vietnamese, producing exactly one Vietnamese line for each English line, and preserve the original line order without skipping, merging, or reordering any lines. "
+        "Return only the translated lines in the exact same order they appeared, separated by newlines, with no additional commentary:\n\n"
+        f"{text}"
+    )
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",  # or whichever Gemini model you prefer
+        contents=prompt
+    )
+    return response.text  # the full newline-delimited translation
+
+
+def extract_pdf_cells(pdf_path: str, translate: bool = False):
     doc = fitz.open(pdf_path)
-
     cells = []
+
+    # 1) Extract every text span (no per-span translation here)
     for page in doc:
-        page_number = page.number
-        page_dict = page.get_text("dict")
-        for block in page_dict["blocks"]:
+        for block in page.get_text("dict")["blocks"]:
             if block["type"] != 0:
                 continue
             for line in block["lines"]:
                 for span in line["spans"]:
-                    bbox = span["bbox"]
-                    text = span["text"]
-                    font_size = span["size"]
-                    font_name = span["font"]
+                    x0, y0, x1, y1 = span["bbox"]
                     col = span.get("color", 0)
                     r = (col >> 16) & 0xFF
                     g = (col >> 8) & 0xFF
                     b = col & 0xFF
 
-                    cell = {
-                        "page": page_number,
+                    cells.append({
+                        "page": page.number,
                         "bbox": [
-                            round(bbox[0], 6),
-                            round(bbox[1], 6),
-                            round(bbox[2] - bbox[0], 6),
-                            round(bbox[3] - bbox[1], 6),
+                            round(x0, 6),
+                            round(y0, 6),
+                            round(x1 - x0, 6),
+                            round(y1 - y0, 6),
                         ],
-                        "text": text,
+                        "text": span["text"],
                         "font": {
                             "color": [r, g, b, 255],
-                            "name": font_name,
-                            "size": font_size,
+                            "name": span["font"],
+                            "size": span["size"],
                         },
-                        "text_vi": None,
-                    }
+                        "text_vi": None,   # to fill in next
+                    })
+    doc.close()
 
-                    if text.strip():
-                        try:
-                            translator = Translate(text)
-                            res_str = translator.translate(src_lang="en", tgt_lang="vi")
-                            cell["text_vi"] = res_str
-                        except Exception:
-                            cell["text_vi"] = text
-                    else:
-                        cell["text_vi"] = text
+    # 2) Batch-translate all lines in one shot
+    if translate and cells:
+        english_lines = [cell["text"] for cell in cells]
+        batch_text = "\n".join(english_lines)
 
-                    cells.append(cell)
+        try:
+            translated = translate_with_gemini_batched(batch_text)
+            vi_lines = translated.splitlines()
+        except Exception as e:
+            logging.error(f"Gemini translation failed: {e}")
+            vi_lines = english_lines
+
+        # 3) Map each translated line back into its cell
+        for cell, vi in zip(cells, vi_lines):
+            cell["text_vi"] = vi
+
+    else:
+        for cell in cells:
+            cell["text_vi"] = cell["text"]
 
     return {"cells": cells}
 
 
-def create_pdf_from_json(data, output_path):
-    c = canvas.Canvas(output_path, pagesize=A4)
-    pages = {}
+def mask_text_in_image(image_path, cells, page_width, page_height, zoom=2):
+    """Mask text areas in the PNG using the *local* background color for each bbox."""
+    img = Image.open(image_path).convert("RGB")
+    draw = ImageDraw.Draw(img)
+    
+    for cell in cells:
+        x, y, w, h = cell["bbox"]
+        # integer pixel coords
+        left   = int(x * zoom)
+        upper  = int(y * zoom)
+        right  = int((x + w) * zoom)
+        lower  = int((y + h) * zoom)
 
-    for cell in data["cells"]:
+        # avoid empty regions
+        if right <= left or lower <= upper:
+            continue
+
+        # 1) Crop the region and down‐sample to 1×1 to get average color
+        region = img.crop((left, upper, right, lower))
+        avg_color = region.resize((1, 1), resample=Image.Resampling.BILINEAR).getpixel((0, 0))
+
+        # 2) Fill the box with that average
+        draw.rectangle([left, upper, right, lower], fill=avg_color)
+
+    # save masked
+    masked_image_path = image_path.replace(".png", "_masked.png")
+    img.save(masked_image_path)
+    return masked_image_path
+
+def extract_background_images(pdf_path, temp_dir, cells_by_page, zoom=2):
+    """Extract each page as a PNG and mask text areas."""
+    if not os.path.exists(pdf_path):
+        raise FileNotFoundError(f"Original PDF not found: {pdf_path}")
+    
+    os.makedirs(temp_dir, exist_ok=True)
+    doc = fitz.open(pdf_path)
+    image_paths = []
+    
+    for page_num in range(len(doc)):
+        page = doc[page_num]
+        pix = page.get_pixmap(matrix=fitz.Matrix(zoom, zoom))  # High resolution
+        image_path = os.path.join(temp_dir, f"page_{page_num}.png")
+        pix.save(image_path)
+        
+        # Mask text for this page
+        page_cells = cells_by_page.get(page_num, [])
+        if page_cells:
+            masked_image_path = mask_text_in_image(
+                image_path, page_cells, page.rect.width, page.rect.height, zoom=zoom
+            )
+        else:
+            masked_image_path = image_path
+        
+        image_paths.append((masked_image_path, page.rect.width, page.rect.height))
+        if masked_image_path != image_path:
+            os.remove(image_path)  # Remove unmasked image
+    
+    doc.close()
+    return image_paths
+
+def create_pdf_from_json(data, pdf_path, output_path, temp_dir):
+    # Group cells by page for masking and rendering
+    cells_by_page = {}
+    for cell in data.get("cells", []):
+        if not all(key in cell for key in ["page", "bbox", "font", "text_vi"]):
+            logging.warning(f"Skipping invalid cell: {cell}")
+            continue
         page_num = cell["page"]
-        pages.setdefault(page_num, []).append(cell)
+        cells_by_page.setdefault(page_num, []).append(cell)
 
-    for page_num in sorted(pages.keys()):
-        for cell in pages[page_num]:
+    # Extract and mask background images
+    try:
+        image_paths = extract_background_images(pdf_path, temp_dir, cells_by_page)
+    except Exception as e:
+        logging.error(f"Failed to extract background images: {str(e)}")
+        raise
+
+    # Initialize canvas with first page size
+    doc = fitz.open(pdf_path)
+    first_page_size = (doc[0].rect.width, doc[0].rect.height)
+    c = canvas.Canvas(output_path, pagesize=first_page_size)
+    doc.close()
+
+    # Render pages
+    for page_num in tqdm(sorted(cells_by_page.keys()), desc="Rendering pages"):
+        if page_num >= len(image_paths):
+            logging.warning(f"Skipping page {page_num}: No background image available")
+            continue
+
+        image_path, page_width, page_height = image_paths[page_num]
+        # Draw background image, scaled to page size
+        c.drawImage(image_path, 0, 0, width=page_width, height=page_height, preserveAspectRatio=True)
+
+        for cell in cells_by_page.get(page_num, []):
             x, y, w, h = cell["bbox"]
-            font_size = cell["font"]["size"]
-            r, g, b, _ = cell["font"]["color"]
-            text = cell["text_vi"]
+            text = cell.get("text_vi", "") or cell.get("text", "")
+            if not text:
+                continue
+            original_font_size = cell["font"]["size"]
+            r, g, b, a = cell["font"]["color"]
 
+            # Adjust font size
+            font_size = original_font_size
             text_width = stringWidth(text, FONT_NAME, font_size)
             if text_width > w:
-                font_size *= w / text_width
+                font_size *= 0.95 * w / text_width  # 5% margin
             if font_size > h:
                 font_size = h
 
-            c.setFillColorRGB(r / 255, g / 255, b / 255)
+            # Set font and color
+            c.setFillColorRGB(r / 255, g / 255, b / 255, alpha=a / 255)
             c.setFont(FONT_NAME, font_size)
-            adjusted_y = A4[1] - y
-            c.drawString(x, adjusted_y, text)
+
+            # Adjust y-coordinate (PyMuPDF: top-left, ReportLab: bottom-left)
+            adjusted_y = page_height - (y + h)
+            try:
+                c.drawString(x, adjusted_y, text)
+            except Exception as e:
+                logging.warning(f"Failed to render text '{text}' at ({x}, {adjusted_y}): {str(e)}")
 
         c.showPage()
+
     c.save()
+    logging.info(f"✅ PDF generated: {output_path}")
+
+    # Cleanup temporary images
+    try:
+        for image_path, _, _ in image_paths:
+            if os.path.exists(image_path):
+                os.remove(image_path)
+        if os.path.exists(temp_dir):
+            os.rmdir(temp_dir)
+        logging.info(f"Cleaned up temporary directory: {temp_dir}")
+    except Exception as e:
+        logging.warning(f"Failed to clean up temporary files: {str(e)}")
