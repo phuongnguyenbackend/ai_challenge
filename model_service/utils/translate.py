@@ -18,15 +18,15 @@ class TranslationRequest(BaseModel):
     src_lang: str
     tgt_lang: str
     
-    
+def detect_language(text):
+    lang, _ = langid.classify(text)
+    return lang
+ 
 class Translate:
     def __init__(self, text):
         self.text = text.strip()
         self.client = genai.Client(api_key=GEMINI_API_KEY)
 
-    def detect_language(self):
-        lang, _ = langid.classify(self.text)
-        return lang
 
     def gemini_correct(self):
         prompt = textwrap.dedent(f"""
@@ -68,3 +68,4 @@ class Translate:
 
         else:
             raise Exception(response.text)
+
