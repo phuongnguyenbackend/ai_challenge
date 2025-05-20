@@ -97,31 +97,60 @@ def extract_pdf_cells(pdf_path: str, translate: bool = False):
     return {"cells": cells}
 
 
-def mask_text_in_image(image_path, cells, page_width, page_height, zoom=2):
-    """Mask text areas in the PNG using the *local* background color for each bbox."""
+def mask_text_in_image(image_path, cells, page_width, page_height, zoom=2, border_thickness=5):
+    """Mask text areas in the PNG using the average color of a border around each bbox."""
     img = Image.open(image_path).convert("RGB")
     draw = ImageDraw.Draw(img)
     
     for cell in cells:
         x, y, w, h = cell["bbox"]
-        # integer pixel coords
-        left   = int(x * zoom)
-        upper  = int(y * zoom)
-        right  = int((x + w) * zoom)
-        lower  = int((y + h) * zoom)
+        # Integer pixel coordinates
+        left = int(x * zoom)
+        upper = int(y * zoom)
+        right = int((x + w) * zoom)
+        lower = int((y + h) * zoom)
 
-        # avoid empty regions
+        # Avoid empty or invalid regions
         if right <= left or lower <= upper:
             continue
 
-        # 1) Crop the region and down‐sample to 1×1 to get average color
-        region = img.crop((left, upper, right, lower))
-        avg_color = region.resize((1, 1), resample=Image.Resampling.BILINEAR).getpixel((0, 0))
+        # Define a border around the text box (e.g., 5 pixels wide)
+        border_left = max(left - border_thickness, 0)
+        border_upper = max(upper - border_thickness, 0)
+        border_right = min(right + border_thickness, img.width)
+        border_lower = min(lower + border_thickness, img.height)
 
-        # 2) Fill the box with that average
+        # Create regions for the border (top, bottom, left, right strips)
+        regions = []
+        if border_upper < upper:  # Top border
+            regions.append(img.crop((border_left, border_upper, border_right, upper)))
+        if lower < border_lower:  # Bottom border
+            regions.append(img.crop((border_left, lower, border_right, border_lower)))
+        if border_left < left:  # Left border
+            regions.append(img.crop((border_left, border_upper, left, border_lower)))
+        if right < border_right:  # Right border
+            regions.append(img.crop((right, border_upper, border_right, border_lower)))
+
+        # Combine pixel data from border regions
+        pixels = []
+        for region in regions:
+            for x in range(region.width):
+                for y in range(region.height):
+                    pixels.append(region.getpixel((x, y)))
+
+        # Calculate average color of the border
+        if pixels:
+            avg_color = tuple(
+                int(sum(channel) / len(pixels)) for channel in zip(*pixels)
+            )
+        else:
+            # Fallback to a default color if no border pixels are available
+            avg_color = (255, 255, 255)  # White as default
+
+        # Fill the text box with the average border color
         draw.rectangle([left, upper, right, lower], fill=avg_color)
 
-    # save masked
+    # Save masked image
     masked_image_path = image_path.replace(".png", "_masked.png")
     img.save(masked_image_path)
     return masked_image_path
