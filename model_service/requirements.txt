@@ -4,3 +4,9 @@ langid
 requests
 python-dotenv
 google-genai
+pydantic
+PyMuPDF
+reportlab
+Pillow
+tqdm
+python-multipart
