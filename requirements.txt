@@ -1,5 +1,22 @@
-torch==0.4.1.post2
-torchvision==0.2.1
-opencv-python==3.4.2.17
-scikit-image==0.14.2
-scipy==1.1.0
+# PyTorch (CUDA 12.6 build)
+torch==2.7.0+cu126
+torchvision==0.22.0+cu126
+torchaudio==2.7.0+cu126
+--extra-index-url https://download.pytorch.org/whl/cu126
+
+# Core dependencies
+numpy
+opencv-python
+Pillow
+pytesseract
+scikit-image
+scikit-learn
+
+# Google Gemini API client
+google-generativeai
+
+# Env‐file loader
+python-dotenv
+
+# Optional: advanced font tools
+fonttools
