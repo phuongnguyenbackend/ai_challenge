@@ -137,7 +137,9 @@ if __name__=='__main__':
     load_weights(model, "craft_mlt_25k.pth")
     model.cuda()
     model.eval()
-    image = cv2.imread("hehe.png")
+    image = cv2.imread("image.png")
+    if image is None:
+        raise FileNotFoundError("Could not load image.png. Please ensure the file exists.")
     img_resized, target_ratio, size_heatmap = imgproc.resize_aspect_ratio(image, 1280, interpolation=cv2.INTER_LINEAR, mag_ratio=1.5)
     ratio_h = ratio_w = 1/target_ratio
     x = imgproc.normalizeMeanVariance(img_resized)
@@ -153,10 +155,34 @@ if __name__=='__main__':
         x_min, y_min = int(min(box, key=lambda p: p[0])[0]), int(min(box, key=lambda p: p[1])[1])
         x_max, y_max = int(max(box, key=lambda p: p[0])[0]), int(max(box, key=lambda p: p[1])[1])
         roi = image[y_min:y_max, x_min:x_max]
+        # Use Tesseract with hocr output to attempt font detection
+        custom_config = r'--oem 1 --psm 6 -c tessedit_create_hocr=1'
+        hocr_data = pytesseract.image_to_pdf_or_hocr(roi, extension='hocr', config=custom_config)
         text = pytesseract.image_to_string(roi, config="--psm 6").strip()
         if text:
             color = get_text_color(roi)
-            words.append({"text": text, "x": x_min, "y": y_min, "w": x_max-x_min, "h": y_max-y_min, "color": color})
+            # Parse hocr to infer font (simplified approximation)
+            font_name = "arial"  # Default fallback
+            try:
+                from bs4 import BeautifulSoup
+                soup = BeautifulSoup(hocr_data, 'html.parser')
+                for span in soup.find_all('span', class_='ocr_word'):
+                    if 'style' in span.attrs:
+                        style = span['style']
+                        if 'font-family' in style:
+                            font_name = style.split('font-family:')[1].split(';')[0].strip().lower()
+                            # Map to available fonts (simplified)
+                            font_map = {
+                                'times': 'times.ttf',
+                                'arial': 'arial.ttf',
+                                'helvetica': 'helvetica.ttf',
+                                'courier': 'courier.ttf'
+                            }
+                            font_name = font_map.get(font_name, 'arial.ttf')
+                            break
+            except Exception as e:
+                print(f"Font detection failed: {e}. Using default font (arial.ttf).")
+            words.append({"text": text, "x": x_min, "y": y_min, "w": x_max-x_min, "h": y_max-y_min, "color": color, "font": font_name})
     sentences = noname_for_this_function(words)
 
     # Calculate overall bounding box for each sentence
@@ -188,10 +214,17 @@ if __name__=='__main__':
         f"{full_text}"
     )
 
-    # Translate
-    response = model.generate_content(prompt)
-    translated_text = response.text
-    translated_sentences = translated_text.split("\n")
+    # Translate with error handling
+    try:
+        response = model.generate_content(prompt)
+        translated_text = response.text
+        translated_sentences = translated_text.split("\n")
+        if len(translated_sentences) != len(sentence_texts):
+            print("Translation mismatch. Using original texts as fallback.")
+            translated_sentences = sentence_texts.copy()
+    except Exception as e:
+        print(f"Translation failed: {e}. Using original texts as fallback.")
+        translated_sentences = sentence_texts.copy()
 
     # Create mask for all word bounding boxes
     all_word_bboxes = []
@@ -211,16 +244,17 @@ if __name__=='__main__':
     pil_image = Image.fromarray(cv2.cvtColor(inpainted_image, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(pil_image)
 
-    # Load font with fallback
-    font_path = "arial.ttf"  # Replace with your font file path
-    try:
-        font = ImageFont.truetype(font_path, 10)  # Initial load to check if font is available
-    except Exception as e:
-        print(f"Failed to load font: {e}. Using default font.")
-        font = ImageFont.load_default()
+    # Load font with fallback and apply first word's font
+    font_base_path = os.path.dirname(__file__)  # Assume fonts are in the same directory
+    font_files = {
+        'times.ttf': 'times.ttf',
+        'arial.ttf': 'arial.ttf',
+        'helvetica.ttf': 'helvetica.ttf',
+        'courier.ttf': 'courier.ttf'
+    }
 
     for i, sentence in enumerate(sentences):
-        if "bbox" in sentence:
+        if "bbox" in sentence and sentence["words"]:
             min_x, min_y, max_x, max_y = sentence["bbox"]
             translated_sentence = translated_sentences[i]
 
@@ -232,11 +266,17 @@ if __name__=='__main__':
             font_size = int(bbox_height * 0.8)
             font_size = max(font_size, 10)  # Minimum font size
 
+            # Use the font of the first word
+            first_word = sentence["words"][0]
+            font_file = first_word.get("font", "arial.ttf")
+            font_path = os.path.join(font_base_path, font_file)
+
             # Load font with the initial size
             try:
                 font = ImageFont.truetype(font_path, font_size)
-            except:
-                font = ImageFont.load_default()
+            except Exception as e:
+                print(f"Failed to load font {font_file}: {e}. Using arial.ttf as fallback.")
+                font = ImageFont.truetype(os.path.join(font_base_path, 'arial.ttf'), font_size)
 
             # Measure text dimensions and adjust font size to fit both width and height
             text_bbox = draw.textbbox((0, 0), translated_sentence, font=font)
@@ -249,7 +289,7 @@ if __name__=='__main__':
                 try:
                     font = ImageFont.truetype(font_path, font_size)
                 except:
-                    font = ImageFont.load_default()
+                    font = ImageFont.truetype(os.path.join(font_base_path, 'arial.ttf'), font_size)
                 text_bbox = draw.textbbox((0, 0), translated_sentence, font=font)
                 text_width = text_bbox[2] - text_bbox[0]
                 text_height = text_bbox[3] - text_bbox[1]
@@ -259,7 +299,7 @@ if __name__=='__main__':
             text_y = min_y + (bbox_height - text_height) / 2  # Keep vertical centering for balance
 
             # Use the color of the first word for the translated text
-            first_word_color = sentence["words"][0]["color"]
+            first_word_color = first_word["color"]
             text_color = tuple(int(c) for c in first_word_color)  # Convert to tuple of integers for PIL
 
             # Draw the translated text

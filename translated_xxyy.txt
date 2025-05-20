@@ -1,25 +1,41 @@
-17,8,845,26: Hình 2 So sánh kiến trúc TSAM (được viền đỏ ở trên cùng) với TSM gốc (được viền xám ở dưới cùng).
-17,25,845,45: Lô đầu vào bao gồm (Wo video có độ dài khác nhau, với các khung hình cụ thể được đánh dấu màu xanh lam và vàng. Trong khi mô hình TSM yêu cầu
-17,42,845,63: đầu vào có độ dài cố định sử dụng phần đệm (hiển thị màu trắng) hoặc cắt bớt khung hình (hiển thị màu đỏ) khi cần thiết, thì mô hình TSAM sử dụng
-17,61,845,81: bộ đếm dịch chuyển riêng lẻ để quản lý các chuỗi có độ dài thay đổi mà không cần thêm phần đệm hoặc cắt xén. Bộ đếm dịch chuyển được hiển thị ở
-16,79,845,98: đầu khối TSAM cho biết cách các dịch chuyển được kích hoạt riêng lẻ cho từng video, tăng bộ đếm dịch chuyển cho đến khi đạt đến
-17,98,187,118: chiều dài của video cụ thể đó.
-18,152,413,173: nâng cao hiệu suất trên ChicagoFS Wild và ChicagoF-
-450,154,844,172: HandReader RGBAKP kết hợp cả hai. Mỗi cái được đào tạo trực tiếp
-19,172,413,194: các tập thử nghiệm SWild+. Điểm chính thường được thu thập bằng cách sử dụng Me-
-448,172,845,193: tiếp bằng cách sử dụng tổn thất CTC, loại bỏ nhu cầu về
-17,194,413,212: diaPipe [16] hoặc một mạng nơ-ron khác được đào tạo cho CS tư thế
-448,193,844,213: sự liên kết ký tự. Một Gated Re hai lớp hai chiều
-17,214,414,232: timation Các tác giả [là] kết hợp RGB và keypoint
-448,214,846,233: Unit (GRU) hiện tại [4] được chọn làm bộ giải mã để tạo
-19,233,413,254: phương thức sử dụng các lớp tuyến tính để chiếu COOT 9D-
-451,233,844,252: một chuỗi các ký tự, nâng cao khả năng của mô hình
-17,252,414,273: dinates vào không gian 3D. Sau khi trích xuất tất cả các tính năng, chúng
-448,253,844,273: để nắm bắt động lực học thời gian. Chúng tôi áp dụng một lớp tuyến tính với
-17,273,413,288: nối chúng và sử dụng bộ giải mã dựa trên
-450,271,845,292: SoftMax cho đầu ra GRU để tạo ra xác suất hậu nghiệm
-17,292,414,313: cơ chế chú ý. Bất chấp những hứa hẹn được thể hiện bởi
-448,292,845,311: tính cho mỗi nhân vật được dự đoán trên mọi khung hình. Bộ mã hóa
-19,311,414,333: các phương pháp trên độ chính xác nhận dạng vẫn có tiềm năng
-448,313,726,328: cho mỗi kiến trúc được mô tả dưới đây.
-17,333,413,351: cải tiến Vì vậy. mục tiêu chính của chúng tôi là để en-
+75,18,225,47: Our Vision
+73,56,591,85: To be the world’s leading provider of safety solutions that
+671,58,1215,84: respiratory protective equipment, thermal imaging cameras,
+75,92,622,115: protect workers when life is on the line We pursue this vision
+671,92,1225,117: gas and flame detection instruments, ballistic helmets as well
+75,124,646,150: with an unsurpassed commitment to integrity, customer service
+671,121,1169,149: as head, eye, face hearing, and fall protection products.
+73,155,617,181: and product innovation that creates exceptional value for all
+671,177,1242,202: MSA was founded in 1914 by John i, Ryan and George H. Deike,
+75,188,238,209: MSA stakeholders.
+671,209,1203,234: two mining engineers who had firsthand knowledge of the
+669,240,1207,267: terrible human loss that was occurring in underground coal
+75,256,312,285: Business of MSA
+671,271,1202,300: mines at that time Their knowledge of the mining industry
+75,295,587,323: MSA is in the business of developing, manufacturing and
+670,305,1165,333: provided the foundation for the development of safety
+73,328,636,353: selling innovative products that enhance the safety and health
+671,337,1211,365: equipment to better protect underground miners While the
+73,361,628,385: of workers throughout the world. Critical to MSA's mission is a
+671,372,1205,397: range of markets served by MSA has expanded greatly over
+73,390,620,419: clear understanding of customer processes and safety needs.
+669,400,1238,430: the years, the founding philosophy of understanding customer
+75,423,622,450: MSA dedicates significant resources to research which allows
+670,435,1182,460: safety needs and designing innovative safety equipment
+73,456,611,482: the company to develop a keen understanding of customer
+671,470,944,492: solutions remains unchanged.
+73,491,285,516: safety requirements for
+301,489,620,518: diverse range of markets, including
+73,521,633,546: the fire service, law enforcement, construction, public utilities,
+671,522,1209,549: MSA is headquartered in Cranberry Township, Pennsylvania,
+74,553,583,582: mining, chemical. petroleum, HVAC hazardous materials
+671,555,1209,579: with operations employing 5,300 associates throughout the
+73,587,638,612: remediation, military, and retail. MSA's principal products each
+671,589,726,607: world.
+749,587,1213,611: publicly held company, MSA's stock is traded on the
+73,620,617,644: designed to serve the needs of these target markets, include
+671,619,1114,645: New York Stock Exchange under the symbol MSA.
+82,871,1105,1010: OUR MISSION
+75,1033,853,1083: That men and women may work in Safety
+78,1091,1026,1147: and that they, their families and their communities
+84,1155,833,1205: may live in health throughout the world.

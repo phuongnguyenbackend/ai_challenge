@@ -20,3 +20,4 @@ python-dotenv
 
 # Optional: advanced font tools
 fonttools
+beautifulsoup4
