@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+langid
+requests
+python-dotenv
+google-genai

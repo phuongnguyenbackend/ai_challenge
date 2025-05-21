@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Image Translator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <style>
+        body {
+          background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+          min-height: 100vh;
+        }
+        .card {
+          border-radius: 1rem;
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+        .preview {
+          height: 400px;
+          overflow: auto;
+          background: #fff;
+          border-radius: 0.5rem;
+          border: 1px solid #ddd;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .btn-back {
+          margin-bottom: 1rem;
+          display: inline-block;
+        }
+        #translateBtn, #downloadButton {
+          background-color: #009e88;
+          color: #fff;
+        }
+        #translateBtn:hover, #downloadButton:hover {
+          background-color: #008371;
+        }
+        img {
+          max-width: 100%;
+          height: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container py-4">
+    <a href="home.html" class="btn btn-outline-light btn-back">← Back</a>
+    <div class="row g-4">
+        <div class="col-md-6 d-flex">
+            <div class="card p-4 w-100">
+                <h5 class="mb-3">Upload Image (JPG, PNG, etc.)</h5>
+                <input type="file" class="form-control mb-3" id="uploadInput" accept=".jpg,.jpeg,.png,.bmp,.webp"/>
+                <div class="preview mb-3" id="inputPreview">No image uploaded</div>
+                <button class="btn w-100" id="translateBtn">Translate</button>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex">
+            <div class="card p-4 w-100">
+                <h5 class="mb-3">Translated Image</h5>
+                <div class="preview mb-3" id="output">Waiting for translation...</div>
+                <a href="#" class="btn w-100 disabled" id="downloadButton">Download</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    fetch('/api/check_session_image_translate')
+            .then(res => {
+                if (res.status === 200) {
+                    console.log("ok");
+                } else {
+                    window.location.href = '/index.html';
+                }
+            })
+            .catch(err => {
+                console.error("Error:", err);
+                window.location.href = '/index.html';
+            });
+    document.getElementById('uploadInput').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        const preview = document.getElementById('inputPreview');
+        const output = document.getElementById('output');
+        const downloadBtn = document.getElementById('downloadButton');
+
+        output.innerHTML = "Waiting for translation...";
+        downloadBtn.classList.add('disabled');
+        downloadBtn.href = '#';
+        downloadBtn.innerText = 'Download';
+
+        if (file && file.type.startsWith('image/')) {
+            const fileURL = URL.createObjectURL(file);
+            preview.innerHTML = `<img src="${fileURL}" alt="Uploaded Image"/>`;
+        } else {
+            preview.textContent = 'Unsupported file type. Please upload an image.';
+        }
+    });
+
+    document.getElementById('translateBtn').addEventListener('click', async () => {
+        const fileInput = document.getElementById('uploadInput');
+        const file = fileInput.files[0];
+
+        if (!file) {
+            alert("Please select an image.");
+            return;
+        }
+
+        if (!file.type.startsWith('image/')) {
+            alert("Invalid file type. Please upload an image.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('tgt_lang', 'vi');
+
+        const output = document.getElementById('output');
+        const downloadBtn = document.getElementById('downloadButton');
+        output.innerHTML = "Processing...";
+        downloadBtn.classList.add('disabled');
+
+        try {
+            const response = await fetch('http://localhost:8000/api/translate_image', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                let errorMessage = "Translation failed.";
+                const contentType = response.headers.get("Content-Type") || "";
+
+                if (contentType.includes("application/json")) {
+                    const errorData = await response.json();
+                    errorMessage = errorData?.detail || errorMessage;
+                } else {
+                    const errorText = await response.text();
+                    errorMessage = errorText || errorMessage;
+                }
+
+                throw new Error(errorMessage);
+            }
+
+
+            const blob = await response.blob();
+            const outputImageURL = URL.createObjectURL(blob);
+
+            output.innerHTML = `<img src="${outputImageURL}" alt="Translated Image"/>`;
+            downloadBtn.href = outputImageURL;
+            downloadBtn.download = 'translated_image.png';
+            downloadBtn.classList.remove('disabled');
+            downloadBtn.innerText = 'Download Translated Image';
+
+            const saveForm = new FormData();
+            saveForm.append('original', file);
+            saveForm.append('translated', blob);
+
+            await fetch('/api/image_history', {
+                method: 'POST',
+                body: saveForm
+            });
+
+        } catch (error) {
+            output.innerHTML = "Failed to process image.";
+            alert("Error: " + error.message);
+        }
+    });
+</script>
+
+</body>
+</html>
