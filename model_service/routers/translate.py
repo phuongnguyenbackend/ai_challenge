@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File
 from fastapi.responses import FileResponse
-from utils.translate import Translate, TranslationRequest
+from model_service.utils.translate import Translate, TranslationRequest
 import uuid
 import os
-from utils.pdf_utils import (
+from model_service.utils.pdf_utils import (
     extract_pdf_cells,
     create_pdf_from_json
 )

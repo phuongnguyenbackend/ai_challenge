@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import translate
+from model_service.routers import translate
 
 app  = FastAPI()
 

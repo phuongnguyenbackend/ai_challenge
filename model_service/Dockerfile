@@ -1,14 +1,14 @@
 # syntax=docker/dockerfile:1
-FROM python:3.10-slim
+FROM python:3.12-slim
 
-WORKDIR /model_service
+WORKDIR /app
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir --timeout 100 --retries 3 -r requirements.txt
+COPY ./model_service/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY NotoSans-Regular.ttf ./
-COPY . .
+COPY ./model_service/NotoSans-Regular.ttf .
+COPY ./model_service ./model_service
 
-EXPOSE 8080
+EXPOSE 8000
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"] 
+CMD ["uvicorn", "model_service.main:app", "--host", "0.0.0.0", "--port", "8000"] 

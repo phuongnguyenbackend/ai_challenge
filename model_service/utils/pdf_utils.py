@@ -9,6 +9,10 @@ from google import genai
 import logging
 from PIL import Image, ImageDraw
 from tqdm import tqdm
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 
