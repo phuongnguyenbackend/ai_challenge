@@ -19,8 +19,13 @@ import os
 import sys
 import langid
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+import shutil
 
+tess_path = shutil.which('tesseract')
+if tess_path:
+    pytesseract.pytesseract.tesseract_cmd = tess_path
+else:
+    raise RuntimeError("Không tìm thấy Tesseract trong PATH")
 
 def detect_language(text):
     lang, _ = langid.classify(text)
@@ -178,7 +183,7 @@ def detect_text(model, image):
     return words
 
 
-def translate_with_gemini(sentences,tgt_lang):
+def translate_with_gemini(sentences):
     sentence_texts = [s["text"] for s in sentences]
     full_text = "\n".join(sentence_texts)
 
@@ -187,16 +192,15 @@ def translate_with_gemini(sentences,tgt_lang):
         raise ValueError("Please set the GEMINI_API_KEY environment variable.")
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel('gemini-2.0-flash')
-    src_lang = detect_language(full_text)
     prompt = (
         "You are a professional translator. "
-        f"First, carefully read the entire {src_lang} text below—each line is separated by newline characters—to fully grasp its context, style, and terminology. "
-        f"Then translate it into {tgt_lang}, producing exactly one {tgt_lang} line for each {src_lang} line, and preserve the original line order without skipping, merging, or reordering any lines. "
+        "First, carefully read the entire English text below—each line is separated by newline characters—to fully grasp its context, style, and terminology. "
+        "Then translate it into Vietnamese, producing exactly one Vietnamese line for each English line, and preserve the original line order without skipping, merging, or reordering any lines. "
         "Return only the translated lines in the exact same order they appeared, separated by newlines, with no additional commentary:\n\n"
         f"{full_text}"
     )
     response = model.generate_content(prompt)
-    return response.text.split("\n")
+    return [line.strip() for line in response.text.split("\n") if line.strip() != ""]
 
 def calculate_sentence_bboxes(sentences):
     for s in sentences:
@@ -216,7 +220,7 @@ def inpaint_text(image, sentences):
             cv2.rectangle(mask, (x1, y1), (x2, y2), 255, -1)
     return cv2.inpaint(image, mask, 3, cv2.INPAINT_TELEA)
 
-def draw_translated_text(pil_img, sentences, translated_sentences, font_path="arial.ttf"):
+def draw_translated_text(pil_img, sentences, translated_sentences, font_path="model_ocr/arial.ttf"):
     draw = ImageDraw.Draw(pil_img)
     for i, s in enumerate(sentences):
         if "bbox" in s:
@@ -259,13 +263,13 @@ def save_debug_files(image, sentences, translated_sentences):
             min_x, min_y, max_x, max_y = s["bbox"]
             f.write(f"{min_x},{min_y},{max_x},{max_y}: {translated_sentences[i]}\n")
 
-def process_image(input_path, tgt_lang ,output_path="translated_image_1.png"):
+def process_image(input_path,output_path="translated_image_1.png"):
     image = cv2.imread(input_path)
     model = load_craft_model("model_ocr/craft_mlt_25k.pth")
     words = detect_text(model, image)
     sentences = noname_for_this_function(words)
     sentences = calculate_sentence_bboxes(sentences)
-    translated_sentences = translate_with_gemini(sentences,tgt_lang)
+    translated_sentences = translate_with_gemini(sentences)
     inpainted = inpaint_text(image, sentences)
     pil_img = Image.fromarray(cv2.cvtColor(inpainted, cv2.COLOR_BGR2RGB))
     draw_translated_text(pil_img, sentences, translated_sentences)

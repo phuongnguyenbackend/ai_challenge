@@ -4,3 +4,22 @@ langid
 requests
 python-dotenv
 google-genai
+reportlab
+python-multipart
+
+# Core dependencies
+numpy
+opencv-python-headless
+Pillow
+pytesseract
+scikit-image
+scikit-learn
+PyMuPDF
+# Google Gemini API client
+google-generativeai
+
+# Env‐file loader
+python-dotenv
+
+# Optional: advanced font tools
+fonttools

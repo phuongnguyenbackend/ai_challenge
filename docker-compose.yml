@@ -1,0 +1,51 @@
+
+services:
+  model_service:
+    build:
+      context: .
+      dockerfile: ./model_service/Dockerfile
+    container_name: model_service
+    hostname: model_service
+    ports:
+      - "8000:8000"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+    volumes:
+      - ./model_service/uploads:/app/uploads
+      - ./model_service/outputs:/app/outputs
+    depends_on:
+      - translateeverything
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+  translateeverything:
+    build:
+      context: .
+      dockerfile: ./translateeverything/Dockerfile
+    container_name: translateeverything
+    hostname: translateeverything
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/translateeverything
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  mongodb_data: 

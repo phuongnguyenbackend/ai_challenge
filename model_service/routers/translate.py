@@ -76,7 +76,10 @@ async def translate_image(file: UploadFile = File(...), tgt_lang: str = "vi"):
     if not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="Unsupported file type")
 
-    file_ext = file.filename.split('.')[-1].lower()
+    if not file.filename or '.' not in file.filename:
+        raise HTTPException(status_code=400, detail="File name missing extension")
+
+    file_ext = file.filename.rsplit('.', 1)[-1].lower()
     if file_ext not in ["png", "jpg", "jpeg"]:
         raise HTTPException(status_code=400, detail="Unsupported image format")
 
@@ -93,8 +96,9 @@ async def translate_image(file: UploadFile = File(...), tgt_lang: str = "vi"):
     cv2.imwrite(input_path, img)
 
     try:
-        process_image(input_path, tgt_lang, output_path)
+        process_image(input_path, output_path)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Processing error: {e}")
 
     return FileResponse(output_path, media_type="image/png", filename=f"translated_{file.filename}")
+
