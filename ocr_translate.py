@@ -137,7 +137,7 @@ if __name__=='__main__':
     load_weights(model, "craft_mlt_25k.pth")
     model.cuda()
     model.eval()
-    image = cv2.imread("hehe.png")
+    image = cv2.imread("image.png")
     img_resized, target_ratio, size_heatmap = imgproc.resize_aspect_ratio(image, 1280, interpolation=cv2.INTER_LINEAR, mag_ratio=1.5)
     ratio_h = ratio_w = 1/target_ratio
     x = imgproc.normalizeMeanVariance(img_resized)
