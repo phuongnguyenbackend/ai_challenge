@@ -3,6 +3,9 @@ from fastapi.responses import FileResponse
 from utils.translate import Translate, TranslationRequest
 import uuid
 import os
+from model_ocr.ocr_translate import process_image
+import cv2
+import numpy as np
 from utils.pdf_utils import (
     extract_pdf_cells,
     create_pdf_from_json
@@ -66,3 +69,32 @@ async def translate_pdf(file: UploadFile = File(...)):
 
     # Return file as response
     return FileResponse(output_path, media_type="application/pdf", filename="translated_vi.pdf")
+
+
+@router.post("/translate-image")
+async def translate_image(file: UploadFile = File(...), tgt_lang: str = "vi"):
+    if not file.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="Unsupported file type")
+
+    file_ext = file.filename.split('.')[-1].lower()
+    if file_ext not in ["png", "jpg", "jpeg"]:
+        raise HTTPException(status_code=400, detail="Unsupported image format")
+
+    file_id = str(uuid.uuid4())
+    input_path = os.path.join(UPLOAD_FOLDER, f"{file_id}.{file_ext}")
+    output_path = os.path.join(OUTPUT_FOLDER, f"{file_id}_translated.png")  # output dạng PNG
+
+    content = await file.read()
+    nparr = np.frombuffer(content, np.uint8)
+    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    if img is None:
+        raise HTTPException(status_code=400, detail="Invalid image file")
+
+    cv2.imwrite(input_path, img)
+
+    try:
+        process_image(input_path, tgt_lang, output_path)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Processing error: {e}")
+
+    return FileResponse(output_path, media_type="image/png", filename=f"translated_{file.filename}")
