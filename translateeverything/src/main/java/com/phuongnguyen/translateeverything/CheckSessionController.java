@@ -87,4 +87,14 @@ public class CheckSessionController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Session invalid");
         }
     }
+    @GetMapping("/api/check_session_image_history")
+    public ResponseEntity<?> checkSessionImageHistory(HttpSession session) {
+        Object user = session.getAttribute("currentUser");
+
+        if (user != null) {
+            return ResponseEntity.ok().body("Session valid");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Session invalid");
+        }
+    }
 }

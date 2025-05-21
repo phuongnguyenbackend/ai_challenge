@@ -1,41 +1,43 @@
-75,18,225,47: Tầm nhìn của chúng tôi
-73,56,591,85: Trở thành nhà cung cấp giải pháp an toàn hàng đầu thế giới,
-671,58,1215,84: thiết bị bảo vệ hô hấp, camera ảnh nhiệt,
-75,92,622,115: bảo vệ công nhân khi tính mạng bị đe dọa. Chúng tôi theo đuổi tầm nhìn này
-671,92,1225,117: dụng cụ phát hiện khí và ngọn lửa, mũ bảo hiểm đạn đạo cũng như
-75,124,646,150: với cam kết tuyệt đối về tính chính trực, dịch vụ khách hàng
-671,121,1169,149: cũng như các sản phẩm bảo vệ đầu, mắt, mặt, thính giác và chống rơi.
-73,155,617,181: và sự đổi mới sản phẩm tạo ra giá trị đặc biệt cho tất cả
-671,177,1242,202: MSA được thành lập vào năm 1914 bởi John i, Ryan và George H. Deike,
-75,188,238,209: các bên liên quan của MSA.
-671,209,1203,234: hai kỹ sư khai thác mỏ, những người có kiến thức trực tiếp về
-669,240,1207,267: những mất mát to lớn về con người đang xảy ra trong than dưới lòng đất
-75,256,312,285: Hoạt động kinh doanh của MSA
-671,271,1202,300: mỏ vào thời điểm đó. Kiến thức của họ về ngành khai thác mỏ
-75,295,587,323: MSA hoạt động trong lĩnh vực phát triển, sản xuất và
-670,305,1165,333: cung cấp nền tảng cho sự phát triển của an toàn
-73,328,636,353: bán các sản phẩm sáng tạo giúp tăng cường sự an toàn và sức khỏe
-671,337,1211,365: thiết bị để bảo vệ tốt hơn cho thợ mỏ dưới lòng đất. Điều quan trọng đối với sứ mệnh của MSA là
-73,361,628,385: của công nhân trên toàn thế giới. Điều quan trọng đối với sứ mệnh của MSA là
-671,372,1205,397: phạm vi thị trường mà MSA phục vụ đã mở rộng rất nhiều trong
-73,390,620,419: sự hiểu biết rõ ràng về quy trình của khách hàng và nhu cầu an toàn.
-669,400,1238,430: những năm qua, triết lý sáng lập về sự hiểu biết khách hàng
-75,423,622,450: MSA dành nguồn lực đáng kể cho nghiên cứu, cho phép
-670,435,1182,460: nhu cầu an toàn và thiết kế thiết bị an toàn sáng tạo
-73,456,611,482: công ty phát triển sự hiểu biết sâu sắc về khách hàng
-671,470,944,492: các giải pháp vẫn không thay đổi.
-73,491,285,516: yêu cầu an toàn cho
-301,489,620,518: nhiều loại thị trường, bao gồm
-73,521,633,546: lực lượng cứu hỏa, lực lượng thực thi pháp luật, xây dựng, tiện ích công cộng,
-671,522,1209,549: MSA có trụ sở chính tại Cranberry Township, Pennsylvania,
-74,553,583,582: khai thác mỏ, hóa chất. dầu mỏ, HVAC vật liệu nguy hiểm
-671,555,1209,579: với các hoạt động sử dụng 5.300 cộng sự trên toàn thế giới.
-73,587,638,612: khắc phục hậu quả, quân sự và bán lẻ. Các sản phẩm chính của MSA mỗi
-671,589,726,607: công ty đại chúng, cổ phiếu của MSA được giao dịch trên
-749,587,1213,611: được thiết kế để phục vụ nhu cầu của các thị trường mục tiêu này, bao gồm
-73,620,617,644: Sàn giao dịch chứng khoán New York với ký hiệu MSA.
-671,619,1114,645: SỨ MỆNH CỦA CHÚNG TÔI
-82,871,1105,1010: Để nam giới và phụ nữ có thể làm việc trong An toàn
-75,1033,853,1083: và để họ, gia đình và cộng đồng của họ
-78,1091,1026,1147: có thể sống khỏe mạnh trên toàn thế giới.
-84,1155,833,1205: 
+346,5,648,33: Được xây dựng cho tất cả các đội xe giao hàng.
+28,25,54,37: 9:19
+258,25,285,38: 78%
+345,50,624,69: Cho dù bạn quản lý một đội xe nhỏ gồm
+68,72,148,98: 0.2 aall
+230,81,284,98: E 36th
+344,69,630,90: xe giao hàng hoặc một mạng lưới lớn gồm
+345,88,661,106: tài xế, Giải pháp NavaFLEET của chúng tôi mở rộng quy mô để
+344,108,434,128: nhu cầu của bạn.
+29,129,66,144: Then
+94,129,172,144: Park Ave Ss
+384,147,608,166: Theo dõi đội xe của bạn trong thời gian thực
+172,177,180,184: —)
+384,167,591,187: Xem vị trí chính xác và nhận
+44,185,80,198: NEXT
+385,184,622,206: cập nhật từng phút với
+170,205,180,212: tu
+168,212,178,224: =
+385,205,490,225: Google Maps.
+270,250,284,262: w
+384,244,621,263: Đặt ranh giới và nhận thông báo
+385,261,565,280: Nhận thông báo về
+384,282,582,298: các chuyển động trái phép,
+384,300,588,318: sai lệch tuyến đường, và nhiều hơn nữa
+383,339,577,358: Phân tích hành vi của tài xế.
+385,358,597,377: Theo dõi tốc độ, phanh và
+382,376,594,398: chờ để cải thiện sự an toàn và
+383,394,484,416: hiệu suất
+29,418,116,437: 3 minutes
+28,440,134,453: 0.8 mi 8:52 PM
+385,436,588,454: Tối ưu hóa tuyến đường và Tiết kiệm
+383,454,624,472: nhiên liệu. Giảm chi phí với các tuyến đường thông minh hơn,
+385,473,546,490: hiệu quả hơn.
+88,492,224,511: Drop-off package
+346,499,632,519: NavaFleet tận dụng Google Maps để
+96,512,216,528: 425 Charleston Rd
+344,516,624,539: khả năng hiển thị đội xe chính xác và hoạt động
+344,535,610,557: hiệu quả. Giao diện thân thiện, có thể mở rộng
+345,555,610,577: của nó đòi hỏi đào tạo tối thiểu.
+345,576,570,593: Tùy chỉnh cảnh báo, báo cáo và
+345,594,611,614: bảng điều khiển để phù hợp với hoạt động của bạn.
+344,612,625,635: giảm chi phí, cải thiện an toàn và
+344,631,568,653: nâng cao hiệu quả giao hàng.

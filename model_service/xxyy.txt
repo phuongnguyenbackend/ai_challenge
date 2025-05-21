@@ -1,41 +1,43 @@
-75,18,225,47: Our Vision
-73,56,591,85: To be the world’s leading provider of safety solutions that
-671,58,1215,84: respiratory protective equipment, thermal imaging cameras,
-75,92,622,115: protect workers when life is on the line We pursue this vision
-671,92,1225,117: gas and flame detection instruments, ballistic helmets as well
-75,124,646,150: with an unsurpassed commitment to integrity, customer service
-671,121,1169,149: as head, eye, face hearing, and fall protection products.
-73,155,617,181: and product innovation that creates exceptional value for all
-671,177,1242,202: MSA was founded in 1914 by John i, Ryan and George H. Deike,
-75,188,238,209: MSA stakeholders.
-671,209,1203,234: two mining engineers who had firsthand knowledge of the
-669,240,1207,267: terrible human loss that was occurring in underground coal
-75,256,312,285: Business of MSA
-671,271,1202,300: mines at that time Their knowledge of the mining industry
-75,295,587,323: MSA is in the business of developing, manufacturing and
-670,305,1165,333: provided the foundation for the development of safety
-73,328,636,353: selling innovative products that enhance the safety and health
-671,337,1211,365: equipment to better protect underground miners While the
-73,361,628,385: of workers throughout the world. Critical to MSA's mission is a
-671,372,1205,397: range of markets served by MSA has expanded greatly over
-73,390,620,419: clear understanding of customer processes and safety needs.
-669,400,1238,430: the years, the founding philosophy of understanding customer
-75,423,622,450: MSA dedicates significant resources to research which allows
-670,435,1182,460: safety needs and designing innovative safety equipment
-73,456,611,482: the company to develop a keen understanding of customer
-671,470,944,492: solutions remains unchanged.
-73,491,285,516: safety requirements for
-301,489,620,518: diverse range of markets, including
-73,521,633,546: the fire service, law enforcement, construction, public utilities,
-671,522,1209,549: MSA is headquartered in Cranberry Township, Pennsylvania,
-74,553,583,582: mining, chemical. petroleum, HVAC hazardous materials
-671,555,1209,579: with operations employing 5,300 associates throughout the
-73,587,638,612: remediation, military, and retail. MSA's principal products each
-671,589,726,607: world.
-749,587,1213,611: publicly held company, MSA's stock is traded on the
-73,620,617,644: designed to serve the needs of these target markets, include
-671,619,1114,645: New York Stock Exchange under the symbol MSA.
-82,871,1105,1010: OUR MISSION
-75,1033,853,1083: That men and women may work in Safety
-78,1091,1026,1147: and that they, their families and their communities
-84,1155,833,1205: may live in health throughout the world.
+346,5,648,33: Built for all delivery fleets.
+28,25,54,37: 9:19
+258,25,285,38: 78%
+345,50,624,69: Whether you manage a small fleet of
+68,72,148,98: 0.2 aall
+230,81,284,98: E 36th
+344,69,630,90: delivery vehicles or a large network of
+345,88,661,106: drivers, our NavaFLEET Solution scales to
+344,108,434,128: your needs.
+29,129,66,144: Then
+94,129,172,144: Park Ave Ss
+384,147,608,166: Track your fleet in real-time
+172,177,180,184: —)
+384,167,591,187: See exact locations and get
+44,185,80,198: NEXT
+385,184,622,206: minute-by-minute updates with
+170,205,180,212: tu
+168,212,178,224: =
+385,205,490,225: Google Maps.
+270,250,284,262: w
+384,244,621,263: Set boundaries and get alerts
+385,261,565,280: Receive notifi cations for
+384,282,582,298: unauthorized movements,
+384,300,588,318: route deviations, and more
+383,339,577,358: Analyze driver behavior.
+385,358,597,377: Monitor speed, braking, and
+382,376,594,398: idling to improve safety and
+383,394,484,416: performance
+29,418,116,437: 3 minutes
+28,440,134,453: 0.8 mi 8:52 PM
+385,436,588,454: Optimize routes and Save
+383,454,624,472: fuel. Reduce costs with smarter,
+385,473,546,490: more efficient routes.
+88,492,224,511: Drop-off package
+346,499,632,519: NavaFleet leverages Google Maps for
+96,512,216,528: 425 Charleston Rd
+344,516,624,539: precise fleet visibility and operational
+344,535,610,557: efficiency. Its user-friendly, scalable
+345,555,610,577: interface requires minima training.
+345,576,570,593: Customize alerts, reports, and
+345,594,611,614: dashboards to suit your operations.
+344,612,625,635: reducing costs, improving safety, and
+344,631,568,653: enhancing delivery efficiency.
