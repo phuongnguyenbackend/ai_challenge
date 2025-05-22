@@ -200,7 +200,7 @@ def translate_with_gemini(sentences):
         f"{full_text}"
     )
     response = model.generate_content(prompt)
-    return [line.strip() for line in response.text.split("\n") if line.strip() != ""]
+    return response.text.split("\n")
 
 def calculate_sentence_bboxes(sentences):
     for s in sentences:
