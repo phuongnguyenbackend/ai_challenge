@@ -9,6 +9,7 @@ from google import genai
 import logging
 from PIL import Image, ImageDraw
 from tqdm import tqdm
+from model_service.utils.translate import detect_language
 
 logging.basicConfig(level=logging.INFO)
 
@@ -24,11 +25,12 @@ client = genai.Client(
     api_key=os.getenv("GEMINI_API_KEY")
 )
 
-def translate_with_gemini_batched(text: str) -> str:
+def translate_with_gemini_batched(text: str, src_lang: str, tgt_lang: str) -> str:
     prompt = (
         "You are a professional translator. "
-        "First, carefully read the entire English text below—each line is separated by newline characters—to fully grasp its context, style, and terminology. "
-        "Then translate it into Vietnamese, producing exactly one Vietnamese line for each English line, and preserve the original line order without skipping, merging, or reordering any lines. "
+        f"Remember that the source language (language of the text below) has the code '{src_lang}', and the target language has the code '{tgt_lang}'."
+        "Carefully read the entire text below—each line is separated by newline characters—to fully grasp its context, style, and terminology. "
+        "Then translate it into target language, producing exactly one target language line for each source language line, and preserve the original line order without skipping, merging, or reordering any lines. "
         "Return only the translated lines in the exact same order they appeared, separated by newlines, with no additional commentary:\n\n"
         f"{text}"
     )
@@ -39,7 +41,7 @@ def translate_with_gemini_batched(text: str) -> str:
     return response.text  # the full newline-delimited translation
 
 
-def extract_pdf_cells(pdf_path: str, translate: bool = False):
+def extract_pdf_cells(pdf_path: str, tgt_lang: str, translate: bool = False):
     doc = fitz.open(pdf_path)
     cells = []
 
@@ -79,8 +81,10 @@ def extract_pdf_cells(pdf_path: str, translate: bool = False):
         english_lines = [cell["text"] for cell in cells]
         batch_text = "\n".join(english_lines)
 
+        src_lang = detect_language(batch_text)
+
         try:
-            translated = translate_with_gemini_batched(batch_text)
+            translated = translate_with_gemini_batched(batch_text, src_lang, tgt_lang)
             vi_lines = translated.splitlines()
         except Exception as e:
             logging.error(f"Gemini translation failed: {e}")
