@@ -1,0 +1,41 @@
+75,18,225,47: Tầm nhìn của chúng tôi
+73,56,591,85: Trở thành nhà cung cấp hàng đầu thế giới về các giải pháp an toàn,
+671,58,1215,84: thiết bị bảo vệ hô hấp, camera ảnh nhiệt,
+75,92,622,115: bảo vệ người lao động khi tính mạng bị đe dọa. Chúng tôi theo đuổi tầm nhìn này
+671,92,1225,117: các thiết bị phát hiện khí và ngọn lửa, mũ bảo hiểm chống đạn cũng như
+75,124,646,150: với cam kết tuyệt đối về tính chính trực, dịch vụ khách hàng
+671,121,1169,149: cũng như các sản phẩm bảo vệ đầu, mắt, mặt, thính giác và chống rơi ngã.
+73,155,617,181: và đổi mới sản phẩm, tạo ra giá trị vượt trội cho tất cả
+671,177,1242,202: MSA được thành lập năm 1914 bởi John i, Ryan và George H. Deike,
+75,188,238,209: các bên liên quan của MSA.
+671,209,1203,234: hai kỹ sư khai thác mỏ, những người có kiến thức trực tiếp về
+669,240,1207,267: tổn thất nhân mạng khủng khiếp đang xảy ra trong than dưới lòng đất
+75,256,312,285: Hoạt động kinh doanh của MSA
+671,271,1202,300: các mỏ vào thời điểm đó. Kiến thức của họ về ngành khai thác mỏ
+75,295,587,323: MSA tham gia vào việc phát triển, sản xuất và
+670,305,1165,333: đã cung cấp nền tảng cho sự phát triển của an toàn
+73,328,636,353: bán các sản phẩm sáng tạo giúp tăng cường sự an toàn và sức khỏe
+671,337,1211,365: thiết bị để bảo vệ tốt hơn cho thợ mỏ dưới lòng đất. Quan trọng đối với sứ mệnh của MSA là
+73,361,628,385: của người lao động trên toàn thế giới.
+671,372,1205,397: một sự hiểu biết rõ ràng về quy trình và nhu cầu an toàn của khách hàng.
+73,390,620,419: Phạm vi thị trường mà MSA phục vụ đã mở rộng rất nhiều trong
+669,400,1238,430: MSA dành nguồn lực đáng kể cho nghiên cứu, cho phép
+75,423,622,450: những năm qua, triết lý nền tảng về việc hiểu khách hàng
+670,435,1182,460: công ty phát triển sự hiểu biết sâu sắc về khách hàng
+73,456,611,482: nhu cầu an toàn và thiết kế thiết bị an toàn sáng tạo
+671,470,944,492: yêu cầu an toàn cho
+73,491,285,516: các giải pháp vẫn không thay đổi.
+301,489,620,518: nhiều loại thị trường, bao gồm
+73,521,633,546: dịch vụ cứu hỏa, thực thi pháp luật, xây dựng, tiện ích công cộng,
+671,522,1209,549: MSA có trụ sở chính tại Cranberry Township, Pennsylvania,
+74,553,583,582: khai thác mỏ, hóa chất. dầu mỏ, HVAC vật liệu nguy hiểm
+671,555,1209,579: với các hoạt động sử dụng 5.300 cộng sự trên khắp
+73,587,638,612: khắc phục, quân sự và bán lẻ. Các sản phẩm chính của MSA mỗi
+671,589,726,607: thế giới.
+749,587,1213,611: công ty đại chúng, cổ phiếu của MSA được giao dịch trên
+73,620,617,644: được thiết kế để phục vụ nhu cầu của các thị trường mục tiêu này, bao gồm
+671,619,1114,645: Sở giao dịch chứng khoán New York với ký hiệu MSA.
+82,871,1105,1010: SỨ MỆNH CỦA CHÚNG TÔI
+75,1033,853,1083: Rằng đàn ông và phụ nữ có thể làm việc trong An toàn
+78,1091,1026,1147: và rằng họ, gia đình và cộng đồng của họ
+84,1155,833,1205: có thể sống khỏe mạnh trên toàn thế giới.

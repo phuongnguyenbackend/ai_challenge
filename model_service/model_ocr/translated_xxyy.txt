@@ -1,0 +1,25 @@
+17,8,845,26: Hình 2 So sánh kiến trúc TSAM (được viền đỏ ở trên cùng) với TSM gốc (được viền xám ở dưới cùng).
+17,25,845,45: Lô đầu vào bao gồm (Wo video có độ dài khác nhau, với các khung hình cụ thể được đánh dấu màu xanh lam và vàng. Trong khi mô hình TSM yêu cầu
+17,42,845,63: đầu vào có độ dài cố định sử dụng phần đệm (hiển thị màu trắng) hoặc cắt bớt khung hình (hiển thị màu đỏ) khi cần thiết, thì mô hình TSAM sử dụng
+17,61,845,81: bộ đếm dịch chuyển riêng lẻ để quản lý các chuỗi có độ dài thay đổi mà không cần thêm phần đệm hoặc cắt xén. Bộ đếm dịch chuyển được hiển thị ở
+16,79,845,98: đầu khối TSAM cho biết cách các dịch chuyển được kích hoạt riêng lẻ cho từng video, tăng bộ đếm dịch chuyển cho đến khi đạt đến
+17,98,187,118: chiều dài của video cụ thể đó.
+18,152,413,173: nâng cao hiệu suất trên ChicagoFS Wild và ChicagoF-
+450,154,844,172: HandReader RGBAKP kết hợp cả hai. Mỗi cái được đào tạo trực tiếp
+19,172,413,194: các tập thử nghiệm SWild+. Điểm chính thường được thu thập bằng cách sử dụng Me-
+448,172,845,193: tiếp bằng cách sử dụng tổn thất CTC, loại bỏ nhu cầu về
+17,194,413,212: diaPipe [16] hoặc một mạng nơ-ron khác được đào tạo cho CS tư thế
+448,193,844,213: sự liên kết ký tự. Một Gated Re hai lớp hai chiều
+17,214,414,232: timation Các tác giả [là] kết hợp RGB và keypoint
+448,214,846,233: Unit (GRU) hiện tại [4] được chọn làm bộ giải mã để tạo
+19,233,413,254: phương thức sử dụng các lớp tuyến tính để chiếu COOT 9D-
+451,233,844,252: một chuỗi các ký tự, nâng cao khả năng của mô hình
+17,252,414,273: dinates vào không gian 3D. Sau khi trích xuất tất cả các tính năng, chúng
+448,253,844,273: để nắm bắt động lực học thời gian. Chúng tôi áp dụng một lớp tuyến tính với
+17,273,413,288: nối chúng và sử dụng bộ giải mã dựa trên
+450,271,845,292: SoftMax cho đầu ra GRU để tạo ra xác suất hậu nghiệm
+17,292,414,313: cơ chế chú ý. Bất chấp những hứa hẹn được thể hiện bởi
+448,292,845,311: tính cho mỗi nhân vật được dự đoán trên mọi khung hình. Bộ mã hóa
+19,311,414,333: các phương pháp trên độ chính xác nhận dạng vẫn có tiềm năng
+448,313,726,328: cho mỗi kiến trúc được mô tả dưới đây.
+17,333,413,351: cải tiến Vì vậy. mục tiêu chính của chúng tôi là để en-

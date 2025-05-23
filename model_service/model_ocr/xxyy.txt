@@ -1,0 +1,25 @@
+17,8,845,26: Figure 2 Comparison of the TSAM architecture (outlined in red at the top) with the original TSM (outlined in gray at the bottom). The
+17,25,845,45: input batch includes (Wo videos of different lengths, with specific frames highlighted in blue and yellow. While the TSM model requires
+17,42,845,63: fixed-length inputs utilizing padding (shown in white) or trimming frames (shown in red) when necessary, the TSAM model employs
+17,61,845,81: individual shift counters to Manage variable-length sequences without additional padding or trimming. The shift counter displayed at the
+16,79,845,98: top of the TSAM block shows how the shifts are activated individually for each video, incrementing the shift counter until it reaches the
+17,98,187,118: length of that specific video.
+18,152,413,173: vancing performance on ChicagoFS Wild and ChicagoF-
+450,154,844,172: HandReader RGBAKP combines both. Each was trained di-
+19,172,413,194: SWild+ test sets Keypoints are usually acquired using Me-
+448,172,845,193: rectly using CTC loss, eliminating the need for frame-level
+17,194,413,212: diaPipe [16] or another neural network trained for pose CS-
+448,193,844,213: character alignment. A two-layer bidirectional Gated Re-
+17,214,414,232: timation The authors [is] combined RGB and keypoints
+448,214,846,233: current Unit (GRU) [4] was chosen as a decoder to generate
+19,233,413,254: modalities employing linear layers to project the 9D COOT-
+451,233,844,252: a sequence of characters, enhancing the model's capability
+17,252,414,273: dinates into 3D space. After extracting all features, they
+448,253,844,273: to capture temporal dynamics. We apply a linear layer with
+17,273,413,288: concatenated them and used a decoder based on an at-
+450,271,845,292: SoftMax to the GRU output to generate posterior probabil-
+17,292,414,313: tention mechanism. Despite the promise shown by the
+448,292,845,311: ities for each predicted character oat every frame. Encoders
+19,311,414,333: methods above recognition accuracy still has potential for
+448,313,726,328: for each architecture are described below.
+17,333,413,351: improvement Therefore. our primary objective js to en-
