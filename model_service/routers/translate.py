@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, UploadFile, File
+from fastapi import APIRouter, HTTPException, UploadFile, File, Form
 from fastapi.responses import FileResponse
 from utils.translate import Translate, TranslationRequest, detect_language
 import uuid
@@ -45,7 +45,10 @@ async def translate(request : TranslationRequest):
     
 
 @router.post("/translate_pdf")
-async def translate_pdf(file: UploadFile = File(...)):
+async def translate_pdf(
+    file: UploadFile = File(...),
+    tgt_lang: str = Form(...)
+):
     # Save uploaded file
     file_id = str(uuid.uuid4())
     input_path = os.path.join(UPLOAD_FOLDER, f"{file_id}.pdf")
@@ -58,6 +61,7 @@ async def translate_pdf(file: UploadFile = File(...)):
     # Extract, translate, and generate output PDF
     json_data = extract_pdf_cells(
         pdf_path=input_path,
+        tgt_lang=tgt_lang,
         translate=True
     )
     create_pdf_from_json(
