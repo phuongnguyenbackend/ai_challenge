@@ -1,43 +1,43 @@
-346,5,648,33: Được xây dựng cho tất cả các đội xe giao hàng.
+346,5,648,33: Conçu pour toutes les flottes de livraison.
 28,25,54,37: 9:19
 258,25,285,38: 78%
-345,50,624,69: Cho dù bạn quản lý một đội xe nhỏ gồm
+345,50,624,69: Que vous gériez une petite flotte de
 68,72,148,98: 0.2 aall
 230,81,284,98: E 36th
-344,69,630,90: xe giao hàng hoặc một mạng lưới lớn gồm
-345,88,661,106: tài xế, Giải pháp NavaFLEET của chúng tôi mở rộng quy mô để
-344,108,434,128: nhu cầu của bạn.
+344,69,630,90: véhicules de livraison ou un vaste réseau de
+345,88,661,106: chauffeurs, notre solution NavaFLEET s'adapte à
+344,108,434,128: vos besoins.
 29,129,66,144: Then
 94,129,172,144: Park Ave Ss
-384,147,608,166: Theo dõi đội xe của bạn trong thời gian thực
+384,147,608,166: Suivez votre flotte en temps réel
 172,177,180,184: —)
-384,167,591,187: Xem vị trí chính xác và nhận
+384,167,591,187: Visualisez les emplacements exacts et obtenez des
 44,185,80,198: NEXT
-385,184,622,206: cập nhật từng phút với
+385,184,622,206: mises à jour minute par minute avec
 170,205,180,212: tu
 168,212,178,224: =
 385,205,490,225: Google Maps.
 270,250,284,262: w
-384,244,621,263: Đặt ranh giới và nhận thông báo
-385,261,565,280: Nhận thông báo về
-384,282,582,298: các chuyển động trái phép,
-384,300,588,318: sai lệch tuyến đường, và nhiều hơn nữa
-383,339,577,358: Phân tích hành vi của tài xế.
-385,358,597,377: Theo dõi tốc độ, phanh và
-382,376,594,398: chờ để cải thiện sự an toàn và
-383,394,484,416: hiệu suất
+384,244,621,263: Définissez des limites et recevez des alertes
+385,261,565,280: Recevez des notifications pour
+384,282,582,298: les mouvements non autorisés,
+384,300,588,318: les écarts d'itinéraire, et plus encore
+383,339,577,358: Analysez le comportement du conducteur.
+385,358,597,377: Surveillez la vitesse, le freinage et
+382,376,594,398: le ralenti pour améliorer la sécurité et
+383,394,484,416: la performance
 29,418,116,437: 3 minutes
-28,440,134,453: 0.8 mi 8:52 PM
-385,436,588,454: Tối ưu hóa tuyến đường và Tiết kiệm
-383,454,624,472: nhiên liệu. Giảm chi phí với các tuyến đường thông minh hơn,
-385,473,546,490: hiệu quả hơn.
-88,492,224,511: Drop-off package
-346,499,632,519: NavaFleet tận dụng Google Maps để
-96,512,216,528: 425 Charleston Rd
-344,516,624,539: khả năng hiển thị đội xe chính xác và hoạt động
-344,535,610,557: hiệu quả. Giao diện thân thiện, có thể mở rộng
-345,555,610,577: của nó đòi hỏi đào tạo tối thiểu.
-345,576,570,593: Tùy chỉnh cảnh báo, báo cáo và
-345,594,611,614: bảng điều khiển để phù hợp với hoạt động của bạn.
-344,612,625,635: giảm chi phí, cải thiện an toàn và
-344,631,568,653: nâng cao hiệu quả giao hàng.
+28,440,134,453: 0.8 mi 20:52
+385,436,588,454: Optimisez les itinéraires et économisez
+383,454,624,472: du carburant. Réduisez les coûts avec des itinéraires plus intelligents et
+385,473,546,490: plus efficaces.
+88,492,224,511: Déposer le colis
+346,499,632,519: NavaFleet utilise Google Maps pour
+96,512,216,528: une visibilité précise de la flotte et une efficacité
+344,516,624,539: opérationnelle. Son interface conviviale et évolutive
+344,535,610,557: nécessite une formation minimale.
+345,555,610,577: Personnalisez les alertes, les rapports et
+345,576,570,593: les tableaux de bord pour les adapter à vos opérations,
+345,594,611,614: réduisant les coûts, améliorant la sécurité et
+344,612,625,635: améliorant l'efficacité de la livraison.
+344,631,568,653: 
