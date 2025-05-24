@@ -62,7 +62,6 @@ async def translate_pdf(
     json_data = extract_pdf_cells(
         pdf_path=input_path,
         tgt_lang=tgt_lang,
-        tgt_lang=tgt_lang,
         translate=True
     )
     create_pdf_from_json(
