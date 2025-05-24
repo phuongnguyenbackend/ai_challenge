@@ -145,6 +145,7 @@ def noname_for_this_function(words, y_thresh=0.4, x_thres=5.7):
                 segment.append(curr)
         sentences.append({"words": segment, "text": " ".join(word["text"] for word in segment)})
 
+        sentences = [s for s in sentences if len(s) > 1]
     return sentences
 
 
