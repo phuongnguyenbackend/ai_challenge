@@ -221,7 +221,7 @@ def inpaint_text(image, sentences):
             cv2.rectangle(mask, (x1, y1), (x2, y2), 255, -1)
     return cv2.inpaint(image, mask, 3, cv2.INPAINT_TELEA)
 
-def draw_translated_text(pil_img, sentences, translated_sentences, font_path="arial.ttf"):
+def draw_translated_text(pil_img, sentences, translated_sentences, font_path="model_ocr/arial.ttf"):
     draw = ImageDraw.Draw(pil_img)
     for i, s in enumerate(sentences):
         if "bbox" in s:

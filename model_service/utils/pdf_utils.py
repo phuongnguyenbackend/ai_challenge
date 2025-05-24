@@ -9,7 +9,7 @@ from google import genai
 import logging
 from PIL import Image, ImageDraw
 from tqdm import tqdm
-from model_service.utils.translate import detect_language
+from utils.translate import detect_language
 
 logging.basicConfig(level=logging.INFO)
 
