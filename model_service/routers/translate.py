@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form
+from fastapi import APIRouter, HTTPException, UploadFile, File, Form
 from fastapi.responses import FileResponse
 from utils.translate import Translate, TranslationRequest, detect_language
 import uuid
@@ -58,9 +59,9 @@ async def translate_pdf(
         content = await file.read()
         f.write(content)
 
-    # Extract, translate, and generate output PDF
     json_data = extract_pdf_cells(
         pdf_path=input_path,
+        tgt_lang=tgt_lang,
         tgt_lang=tgt_lang,
         translate=True
     )
@@ -71,25 +72,24 @@ async def translate_pdf(
         temp_dir=TEMP_DIR
     )
 
-    # Return file as response
     return FileResponse(output_path, media_type="application/pdf", filename="translated_vi.pdf")
 
 
 @router.post("/translate_image")
-async def translate_image(file: UploadFile = File(...), tgt_lang: str = "vi"):
+async def translate_image(
+    file: UploadFile = File(...),
+    tgt_lang: str = Form(...)  
+):
     if not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="Unsupported file type")
 
-    if not file.filename or '.' not in file.filename:
-        raise HTTPException(status_code=400, detail="File name missing extension")
-
-    file_ext = file.filename.rsplit('.', 1)[-1].lower()
+    file_ext = file.filename.split('.')[-1].lower()
     if file_ext not in ["png", "jpg", "jpeg"]:
         raise HTTPException(status_code=400, detail="Unsupported image format")
 
     file_id = str(uuid.uuid4())
     input_path = os.path.join(UPLOAD_FOLDER, f"{file_id}.{file_ext}")
-    output_path = os.path.join(OUTPUT_FOLDER, f"{file_id}_translated.png")  # output dạng PNG
+    output_path = os.path.join(OUTPUT_FOLDER, f"{file_id}_translated.png")
 
     content = await file.read()
     nparr = np.frombuffer(content, np.uint8)
@@ -100,9 +100,8 @@ async def translate_image(file: UploadFile = File(...), tgt_lang: str = "vi"):
     cv2.imwrite(input_path, img)
 
     try:
-        process_image(input_path, output_path)
+        process_image(input_path, tgt_lang, output_path)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Processing error: {e}")
 
-    return FileResponse(output_path, media_type="image/png", filename=f"translated_{file.filename}")
-
+    return FileResponse(output_path, media_type="image/png", filename=f"{file_id}_translated.png")

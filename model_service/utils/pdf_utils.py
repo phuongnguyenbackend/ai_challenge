@@ -31,6 +31,9 @@ def translate_with_gemini_batched(text: str, src_lang: str, tgt_lang: str) -> st
         f"Remember that the source language (language of the text below) has the code '{src_lang}', and the target language has the code '{tgt_lang}'."
         "Carefully read the entire text below—each line is separated by newline characters—to fully grasp its context, style, and terminology. "
         "Then translate it into target language, producing exactly one target language line for each source language line, and preserve the original line order without skipping, merging, or reordering any lines. "
+        f"Remember that the source language (language of the text below) has the code '{src_lang}', and the target language has the code '{tgt_lang}'."
+        "Carefully read the entire text below—each line is separated by newline characters—to fully grasp its context, style, and terminology. "
+        "Then translate it into target language, producing exactly one target language line for each source language line, and preserve the original line order without skipping, merging, or reordering any lines. "
         "Return only the translated lines in the exact same order they appeared, separated by newlines, with no additional commentary:\n\n"
         f"{text}"
     )
@@ -83,7 +86,10 @@ def extract_pdf_cells(pdf_path: str, tgt_lang: str, translate: bool = False):
 
         src_lang = detect_language(batch_text)
 
+        src_lang = detect_language(batch_text)
+
         try:
+            translated = translate_with_gemini_batched(batch_text, src_lang, tgt_lang)
             translated = translate_with_gemini_batched(batch_text, src_lang, tgt_lang)
             vi_lines = translated.splitlines()
         except Exception as e:
